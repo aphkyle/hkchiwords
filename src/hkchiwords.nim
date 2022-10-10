@@ -1,4 +1,4 @@
-import std/[strformat, xmltree, htmlparser]
+import std/[strutils, strformat, xmltree, htmlparser]
 
 import puppy, uri
 
@@ -40,3 +40,12 @@ proc wordToMandoAudioLinks*(word: string): seq[string] =
   for element in elements:
     let py = element.attr("onclick")[11..^3]
     result.add(fmt"https://www.edbchinese.hk/EmbziciwebRes/pinyin/{py}.mp3")
+
+proc queryWordData*(word: string): seq[string] =
+  #[
+    Grabs 部首 and Amount of strokes
+  ]#
+  let xml = parseHtml(scrapSite(searchCriteria=word))
+  let elements = xml.querySelectorAll(".content_right > table:nth-child(2) > tr:nth-child(2) > td")
+  for element in elements:
+    result.add element.innerText.strip()
