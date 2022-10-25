@@ -49,3 +49,13 @@ proc queryWordData*(word: string): seq[string] =
   let elements = xml.querySelectorAll(".content_right > table:nth-child(2) > tr:nth-child(2) > td")
   for element in elements:
     result.add element.innerText.strip()
+
+proc query註ifExists*(word: string): XmlNode =
+  #[
+    註釋 in the site sometimes contains image,
+    Using XmlNode is a better choice than a string
+    You can parse it yourself later lol xd
+  ]#
+  let xml = parseHtml(scrapSite(searchCriteria=word))
+  let element = xml.querySelector(".eng")
+  return element
